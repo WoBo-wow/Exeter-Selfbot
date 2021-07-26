@@ -25,5 +25,6 @@ To install the dependencies just do this
 pip install [dependency]
 
 py -3 selfbot.py
+py -3 sniper.py
 ```
 
