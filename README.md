@@ -23,5 +23,7 @@
 To install the dependencies just do this
 ```python
 pip install [dependency]
+
+py -3 selfbot.py
 ```
 
