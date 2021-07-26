@@ -1,5 +1,7 @@
 # selfbot
 
+seperate sniper if wanted it
+
 ## Notable Features
 
 ```python
@@ -7,10 +9,6 @@
 - editsnipe
 - antinuke
 - message logger
-- mee6 auto level up
-- nitro sniper
-- giveaway sniper
-- slotbot sniper
 - image search
 - image manipulation
 - massreact
