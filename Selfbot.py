@@ -40,9 +40,6 @@ token = config.get('token')
 password = config.get('password')
 prefix = config.get('prefix')
 
-nitro_sniper = config.get('nitro_sniper')
-
-stream_url = "https://www.twitch.tv/souljaboy"
 tts_language = "en"
 
 start_time = datetime.datetime.utcnow()
